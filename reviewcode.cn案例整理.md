@@ -322,6 +322,18 @@ PS:顺带我想说，如果app配置了itunes查看Documents的功能，apple审
 	
 >如果你的delegate方法，只作为一个textView的委托回调，这种写法没有任何。但是如果你想扩展你的界面，在将来的界面中很可能出现另一个textView，这时你就必须区分这两个textView是谁回调了这个代理方法
 
+####14）在哪里写Autolayout布局最合适
+
+[在哪里写Autolayout布局最合适](http://www.reviewcode.cn/article.html?reviewId=14)
+
+在这片文章里，大神详细介绍了
+
+- layoutSubViews相关的事件机制
+- View中:直接在init方法里创建.
+- ViewController中:直接在viewDidLoad()里创建.
+- 有人问,如果用IB创建约束,在viewDidLoad里不能获取到某个view的正确frame,怎么办?
+- 这个时候你需要在一个叫viewDidLayoutSubviews()里的方法里获取一个view的正确frame.
+
 ###四. 项目配置
 
 ####1）目录结构
