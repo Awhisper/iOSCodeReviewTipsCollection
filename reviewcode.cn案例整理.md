@@ -1,10 +1,16 @@
-#reviewcode.cn 平台部分案例整理
+---
+title: reviewcode.cn平台案例整理
+date: 2016-02-27 14:09:28
+categories: 搬砖
+tags: [codeReview]
+---
+
 我是大神们的搬运工
 
-##彦祖大神的codeReview平台
+## 彦祖大神的codeReview平台
 @叶孤城___ 大神搞了一个提供邀请业内大神付费为你的项目进行CodeReview的平台，产出一份高质量的review报告。[www.reviewcode.cn](www.reviewcode.cn)
 
-##平台案例整理
+## 平台案例整理
 
 可能不见得每个人都要把自己所有的项目，扔到平台上让大神们review，但是我们可以进行归纳总结，在那些大神们的`高质量review报告`中，归纳和总结我们自己需要的，汲取养分。
 
@@ -14,9 +20,11 @@
 
 (农夫山泉的广告词...咳...装X了...跑题了...)
 
-目前CodeReview平台上已经有了超级详尽的10篇review报告，每一个都是实打实的干活，所以我就搬运一下，把他们case by case 的review报告，梳理归类一下，换个形式进行总结和学习
+目前CodeReview平台上已经有了超级详尽的多篇review报告，每一个都是实打实的干活，所以我就搬运一下，把他们case by case 的review报告，梳理归类一下，换个形式进行总结和学习
 
-###为什么要做CodeReview？
+<!-- more -->
+
+### 为什么要做CodeReview？
 引用大神在网站中的一句话
 
 >因为 Code Review 是一种最快捷有效的方式让你清楚地知道“好的代码是怎样写出的”。不知道你们有没有这样的经历。
@@ -35,7 +43,7 @@
 代码的`道`，其实就在这些点点滴滴的细节所汇聚而成的`艺术品`里（咳...装X了...跑题了...）
 
 
-###一. 命名规范
+### 一. 命名规范
 
 在10篇review报告中有3篇提到了命名规范这个事情
 
@@ -61,10 +69,10 @@
 - 图片资源的命名
 - 方法的命名
 
-###二.编码细节
+### 二.编码细节
 写代码的时候，有时候很细微的一行代码，稍加变化，稍加处理，可能就会有很多性能，可读性，扩展性等得提升，在10篇review报告中，有太多这样高质量的编码细节干活。
 
-####1）数字与常量
+#### 1）数字与常量
 
 - [要你命三千：老代码中的那些坑](http://www.reviewcode.cn/article.html?reviewId=3)
 - [关于性能的一些问题](http://www.reviewcode.cn/article.html?reviewId=7)
@@ -72,29 +80,27 @@
 - [一些优化代码结构的方法](http://www.reviewcode.cn/article.html?reviewId=4)
 
 都提到了`数字`，比如
-
-# 
-
-	UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 241, 320, 28)];
-	
+```objectivec
+UILabel *infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 241, 320, 28)];
+```
 这个还算好的，再看看这个
-
-	CGRect rect = CGRectMake(12.2+(page-1)*320+42.5*(i%7),((totalRows-1)%3)*55+2,42.5,42.5);
-	
+```objectivec
+CGRect rect = CGRectMake(12.2+(page-1)*320+42.5*(i%7),((totalRows-1)%3)*55+2,42.5,42.5);
+```
 	
 大神们建议这么使用
-
-	static const CGFloat kTagHeight = 30.0f;
-	static const CGFloat kTagLabelWidthInset = 16.0f;
-
+```objectivec
+static const CGFloat kTagHeight = 30.0f;
+static const CGFloat kTagLabelWidthInset = 16.0f;
+```
 
 另外，不建议用宏，具体有兴趣大家可以看简书的这个帖子 ，[iOS中关于宏定义与常量的使用](http://www.jianshu.com/p/c941e37a8a1d)，简单的说就是宏会增加编译速度
 
 同理一些字符串`常量`等，都建议使用 这样的定义
-
-	static NSString *const kcircleModelDataCategoryName = @"categoryName";
-
-####2）监听通知的位置
+```objectivec
+static NSString *const kcircleModelDataCategoryName = @"categoryName";
+```
+#### 2）监听通知的位置
 
 [一些优化代码结构的方法](http://www.reviewcode.cn/article.html?reviewId=4)
 
@@ -103,21 +109,21 @@
 大神们建议这么使用
 >建议在viewDidLoad里添加通知。在dealloc里移除通知。
 
-####3） 私有成员 or Property
+#### 3） 私有成员 or Property
 
 [话谈 iOS 目录结构的划分](http://www.reviewcode.cn/article.html?reviewId=9)中提到的一个问题
+```objectivec
+@interface PartyViewController ()
 
-	@interface PartyViewController ()
+@property (weak, nonatomic) IBOutlet UITableView *partyTableView;
+@property (strong,nonatomic) NSMutableArray *partys;
+@end
 
-	@property (weak, nonatomic) IBOutlet UITableView *partyTableView;
-	@property (strong,nonatomic) NSMutableArray *partys;
-	@end
-	
-	@implementation PartyViewController{
-	
-	    NSMutableArray *lodedIndex;
-	}
-	
+@implementation PartyViewController{
+
+    NSMutableArray *lodedIndex;
+}
+```
 到底该用哪一个？
 
 大婶们的建议是
@@ -125,14 +131,14 @@
 	
 关于这个，其实在开发中有一定的争议的，有兴趣的可以看一下唐巧老师的这篇文章，[开发中得争议](http://blog.devtang.com/2015/03/15/ios-dev-controversy-1/)
 
-####4） typedef block
+#### 4） typedef block
 [话谈 iOS 目录结构的划分](http://www.reviewcode.cn/article.html?reviewId=9) 提到代码中多次使用的block，诸如`(void (^)(NSError *error))`等，可以统一进行声明，不要每次都手打完整block定义
 
 好处是
 
 >还可以用上 Xcode 的自动补全功能，当你输入 Fa 的时候， FailureBlock 的提示就出来了。用 (void (^)(NSError *error)) 就没有自动补全了，每次都要手工输入一遍，很麻烦
 
-####5） 数字类型
+#### 5） 数字类型
 
 [话谈 iOS 目录结构的划分](http://www.reviewcode.cn/article.html?reviewId=9)中提到了3个问题
 
@@ -158,7 +164,7 @@
 
 简单的说就是，很多NSInterger等数值属性，不要把他定义成NSNumber，因为编译器在发现你对integer变量赋值float变量的时候会自动报错，是一个自动纠错的功能，如果定义成了NSNumber，用语法糖@（float）去转换，就不能自动纠错了
 
-####6）属性修饰符建议
+#### 6）属性修饰符建议
 [好的代码习惯](http://www.reviewcode.cn/article.html?reviewId=10)
 
 >在arc中，弱引用最好使用weak，来避免野指针的出现，weak可以在指向的对象dealloc的时候自动置为nil。
@@ -167,20 +173,20 @@
 
 具体可以看链接中得案例
 
-####7） 字面量语法
+#### 7） 字面量语法
 
 [好的代码习惯](http://www.reviewcode.cn/article.html?reviewId=10)
-
-	_comps.items = [NSArray arrayWithObjects:_photoBarButton, _mediaBarButton, _alarmBarButton, _brushBarButton, _voiceBarButton, _doneBarButton, nil];
-
+```objectivec
+_comps.items = [NSArray arrayWithObjects:_photoBarButton, _mediaBarButton, _alarmBarButton, _brushBarButton, _voiceBarButton, _doneBarButton, nil];
+```
 字面量语法
-
-	_comps.items = @[_photoBarButton, _mediaBarButton, _alarmBarButton, _brushBarButton, _voiceBarButton, _doneBarButton];
-	
+```objectivec
+_comps.items = @[_photoBarButton, _mediaBarButton, _alarmBarButton, _brushBarButton, _voiceBarButton, _doneBarButton];
+```
 >这种做法不仅简单，还更加安全。假如当中的_alarmBarButton为nil，那么通过第一种写法，数组还是会创建出来，只不过数组内只有2个对象，原因在于，“arrayWithObjects:”方法会依次处理各个参数，直到发现nil为止，而第二种写法会在插入nil指针的时候抛出异常，令程序终止运行，这比创建好数组后才发现数组内的元素个数少了要好很多。异常往往能更快地发现错误。
 
-###三.设计思路
-####1）公有私有混乱
+### 三.设计思路
+#### 1）公有私有混乱
 [要你命三千：老代码中的那些坑](http://www.reviewcode.cn/article.html?reviewId=3)
 
 具体案例可以看Link中得细节，大致思路是尽可能的减少接口在头文件中所暴露出来的属性和方法，头文件要尽可能的简洁
@@ -189,7 +195,7 @@
 
 >头文件里地方小，塞到一处并不好。 外部对象都知道，安全问题可不小
 
-####2）消息通知满天飞
+#### 2）消息通知满天飞
 [要你命三千：老代码中的那些坑](http://www.reviewcode.cn/article.html?reviewId=3)
 
 通知虽好，但也不要贪杯啊。
@@ -198,7 +204,7 @@
 
 我觉得明确使用通知的场景，在不需要一对多的情况下，路径不算远的2个模块，完全可以通过delegate，或者block解决
 
-####3）单个对象多职责
+#### 3）单个对象多职责
 [要你命三千：老代码中的那些坑](http://www.reviewcode.cn/article.html?reviewId=3)
 
 同一个一个模块
@@ -210,14 +216,14 @@
 
 >一人做事一人当，切忌都往类里装。 开发人员干的爽，维护人员很受伤。
 
-####4）盲目新增功能
+#### 4）盲目新增功能
 [要你命三千：老代码中的那些坑](http://www.reviewcode.cn/article.html?reviewId=3)
 
 具体案例可以看Link中的细节，简单描述下就是，随着项目的迭代，一个小功能点，多一个标记位，再来一个小功能点，又多一个标记位，随着业务迭代下去，标记位越来越多，如果这里面涉及到逻辑上的关联，一单有个标记位得特殊处理一下，那N个`if`嵌套的场景，简直是`画美不看`
 
 新增的业务需求，还是要经常和老功能进行梳理和总结，该合并该梳理的都要重新和老代码里一起整合，切记直接拍脑袋上手直接添加功能
 
-####5）滥用委托
+#### 5）滥用委托
 [要你命三千：老代码中的那些坑](http://www.reviewcode.cn/article.html?reviewId=3)
 
 [封装一个UI控件的范例](http://www.reviewcode.cn/article.html?reviewId=5)
@@ -230,7 +236,7 @@
 
 简单的说结合具体案例，恰当的采用委托或者block来实现
 
-####6）静态DataSource
+#### 6）静态DataSource
 [一些优化代码结构的方法](http://www.reviewcode.cn/article.html?reviewId=4)
 
 开发中难免会遇到很多静态的几乎很少变化的tableView界面
@@ -241,14 +247,14 @@
 
 >这样，后续迭代版本的内容只需要修改plist文件的内容就可以了。而不需要在代码中修改逻辑。
 
-####7）使用orm
+#### 7）使用orm
 [一些优化代码结构的方法](http://www.reviewcode.cn/article.html?reviewId=4)
 
 很多人都是这么做的
 
 不要在解析网络等数据的时候，手写解析过程，采用`mantle`or`JsonModel`等框架来做这些事情
 
-####8）构建易于测试的模块
+#### 8）构建易于测试的模块
 [一些优化代码结构的方法](http://www.reviewcode.cn/article.html?reviewId=4)
 [如何打造令人愉悦的开发环境](http://www.reviewcode.cn/article.html?reviewId=1)
 
@@ -256,7 +262,7 @@
 众多功能杂糅在一个类里面是不利于测试的，写一个超大函数，干了很多功能也是不利于编写自动化测试的
 后面还会提到，随着项目的逐渐扩大，保持至健壮的自动化测试+持续集成，才是一个健康的项目结构
 
-####9）不要想当然的使用tableView
+#### 9）不要想当然的使用tableView
 
 [不要想当然的使用tableView](http://www.reviewcode.cn/article.html?reviewId=6)
 
@@ -267,7 +273,7 @@
 	- 这样多路复用的选择其实就发生在了返回tableView的操作里，可以避免在控制器中出现臃肿的代码
 - 不要试图滥用Cell的重用机制
 
-####10）圆角
+#### 10）圆角
 [关于性能的一些问题](http://www.reviewcode.cn/article.html?reviewId=7)
 
 详细可以看关于离屏渲染的Link中的介绍，
@@ -279,7 +285,7 @@
 >圆角使用UIImageView来处理。
 简单来说，底层铺一个UIImageView,然后用GraphicsContext生成一张带圆角的图。
 
-####11) App沙盒数据存储目录
+#### 11) App沙盒数据存储目录
 
 [一些代码建议](http://www.reviewcode.cn/article.html?reviewId=8)
 
@@ -287,7 +293,7 @@
 
 PS:顺带我想说，如果app配置了itunes查看Documents的功能，apple审核的时候会查看documents目录，一些非用户可感知的数据，程序生成的数据，存放在Doc目录下，可能会被苹果拒审
 
-####12） 即时抽取函数
+#### 12） 即时抽取函数
 
 [话谈 iOS 目录结构的划分](http://www.reviewcode.cn/article.html?reviewId=9)
 
@@ -295,34 +301,35 @@ PS:顺带我想说，如果app配置了itunes查看Documents的功能，apple审
 
 简单描述就是，随着业务的不断增长，有时候会出现超长的函数，有时候会有相似代码，被写出来，适当的即时抽取函数，减少超长代码，减少近似冗余代码
 
-####13） 使用懒加载
+#### 13） 使用懒加载
 [好的代码习惯](http://www.reviewcode.cn/article.html?reviewId=10)
-
- 	[self initComps];
-    [self initToolbar];
-    [self initVertical];
-    [self initImageView];
-    [self initMediaPick];
-    [self setupSpeechRecognizer];
-    [self initAttributedString];
-    [self initTextView];
-
+```objectivec
+[self initComps];
+[self initToolbar];
+[self initVertical];
+[self initImageView];
+[self initMediaPick];
+[self setupSpeechRecognizer];
+[self initAttributedString];
+[self initTextView];
+```
 这样的代码，推荐使用懒加载
 
 >懒加载带来的收益：我们不再需要显式的生成和调用initAttributedString方法，只需要在使用的时候调用属性self.attrString，对象的实例化全部放在getter中，可以有效降低代码的耦合度;在使用属性之前，属性并不会提前生成，减少内存占用。
 
-####13）delegate校验参数
+#### 14）delegate校验参数
 [好的代码习惯](http://www.reviewcode.cn/article.html?reviewId=10)
-
-	- (void)textViewDidEndEditing:(YYTextView *)textView {
-	    if (textView == self.textView) {
-	        self.navigationItem.rightBarButtonItem = nil;
-	    }
-	}
-	
+```objectivec
+- (void)textViewDidEndEditing:(YYTextView *)textView {
+    if (textView == self.textView) {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+```
 >如果你的delegate方法，只作为一个textView的委托回调，这种写法没有任何。但是如果你想扩展你的界面，在将来的界面中很可能出现另一个textView，这时你就必须区分这两个textView是谁回调了这个代理方法
 
-####14）在哪里写Autolayout布局最合适
+
+#### 15）在哪里写Autolayout布局最合适
 
 [在哪里写Autolayout布局最合适](http://www.reviewcode.cn/article.html?reviewId=14)
 
@@ -334,9 +341,10 @@ PS:顺带我想说，如果app配置了itunes查看Documents的功能，apple审
 - 有人问,如果用IB创建约束,在viewDidLoad里不能获取到某个view的正确frame,怎么办?
 - 这个时候你需要在一个叫viewDidLayoutSubviews()里的方法里获取一个view的正确frame.
 
-###四. 项目配置
 
-####1）目录结构
+### 四. 项目配置
+
+#### 1）目录结构
 [话谈iOS目录结构的划分](http://www.reviewcode.cn/article.html?reviewId=9)
 
 提到了MVC结构，以及MVC结构下如何划分目录结构
@@ -355,7 +363,7 @@ PS:顺带我想说，如果app配置了itunes查看Documents的功能，apple审
 
 PS:我表示，我可能更习惯`先按业务模块划分，再MVC`
 
-####2）合理高效的开发环境
+#### 2）合理高效的开发环境
 [如何打造令人愉悦的开发环境](http://www.reviewcode.cn/article.html?reviewId=1)
 
 这个案例里面详尽探讨了一个观点 `一个合理高效的开发环境应该是依托于自动化之上的.`
@@ -366,21 +374,21 @@ PS:我表示，我可能更习惯`先按业务模块划分，再MVC`
 - 持续集成
 - 常用库的封装和打包
 
-####3）第三方库管理
+#### 3）第三方库管理
 [如何打造令人愉悦的开发环境](http://www.reviewcode.cn/article.html?reviewId=1)
 [要你命三千：老代码中的那些坑](http://www.reviewcode.cn/article.html?reviewId=3)
 
 - 各种第三方库推荐使用cocoapods管理，提高效率
 - 项目勤用三方库，随意穿插改无数。 即使类库有更新，试问代码谁维护
 
-####4) 自动打包配置
+#### 4) 自动打包配置
 [iOS下如何自动化打包App](http://www.reviewcode.cn/article.html?reviewId=11)
 
 - 自动化的全面配置打包平台的一个方案
 
 
 
-###持续更新
+### 持续更新
 codeReview应该持续进行下去，这个总结也应该持续进行。
 
 扔到Git上吧，[iOSCodeReviewTipsCollection](https://github.com/Awhisper/iOSCodeReviewTipsCollection)，（╮(╯_╰)╭ 又TM是广告)
